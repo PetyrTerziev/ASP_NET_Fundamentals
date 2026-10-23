@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GuardPost.Data\GuardPost.Data.csproj" />
+    <ProjectReference Include="..\GuardPost.Web.ViewModels\GuardPost.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>

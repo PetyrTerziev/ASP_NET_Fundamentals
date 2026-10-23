@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuardPost.Web", "src\GuardPost.Web\GuardPost.Web.csproj", "{EB010819-4B09-4F7C-BAD4-86804A2FB803}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8692340C-5AF6-4C73-A621-0FD0F5BF9C40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuardPost.Common", "src\GuardPost.Common\GuardPost.Common.csproj", "{6382DFBA-E587-4E51-9D2E-E21A92423F62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuardPost.Data.Models", "src\GuardPost.Data.Models\GuardPost.Data.Models.csproj", "{2FB57323-405D-4040-A3FA-BE84798BD293}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuardPost.Data", "src\GuardPost.Data\GuardPost.Data.csproj", "{CEA961CD-6089-4CB1-AB5A-BF39262C7472}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuardPost.Web.ViewModels", "src\GuardPost.Web.ViewModels\GuardPost.Web.ViewModels.csproj", "{C65B7701-7216-4F5B-8F3E-AEE73795D221}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuardPost.Services.Core", "src\GuardPost.Services.Core\GuardPost.Services.Core.csproj", "{C7CF90C8-C705-4B7F-BB3E-5D638D0DBFE6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6382DFBA-E587-4E51-9D2E-E21A92423F62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6382DFBA-E587-4E51-9D2E-E21A92423F62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6382DFBA-E587-4E51-9D2E-E21A92423F62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6382DFBA-E587-4E51-9D2E-E21A92423F62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FB57323-405D-4040-A3FA-BE84798BD293}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FB57323-405D-4040-A3FA-BE84798BD293}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FB57323-405D-4040-A3FA-BE84798BD293}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FB57323-405D-4040-A3FA-BE84798BD293}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEA961CD-6089-4CB1-AB5A-BF39262C7472}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEA961CD-6089-4CB1-AB5A-BF39262C7472}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEA961CD-6089-4CB1-AB5A-BF39262C7472}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEA961CD-6089-4CB1-AB5A-BF39262C7472}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C65B7701-7216-4F5B-8F3E-AEE73795D221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C65B7701-7216-4F5B-8F3E-AEE73795D221}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C65B7701-7216-4F5B-8F3E-AEE73795D221}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C65B7701-7216-4F5B-8F3E-AEE73795D221}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7CF90C8-C705-4B7F-BB3E-5D638D0DBFE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7CF90C8-C705-4B7F-BB3E-5D638D0DBFE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7CF90C8-C705-4B7F-BB3E-5D638D0DBFE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7CF90C8-C705-4B7F-BB3E-5D638D0DBFE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB010819-4B09-4F7C-BAD4-86804A2FB803}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB010819-4B09-4F7C-BAD4-86804A2FB803}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB010819-4B09-4F7C-BAD4-86804A2FB803}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB010819-4B09-4F7C-BAD4-86804A2FB803}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6382DFBA-E587-4E51-9D2E-E21A92423F62} = {8692340C-5AF6-4C73-A621-0FD0F5BF9C40}
+		{2FB57323-405D-4040-A3FA-BE84798BD293} = {8692340C-5AF6-4C73-A621-0FD0F5BF9C40}
+		{CEA961CD-6089-4CB1-AB5A-BF39262C7472} = {8692340C-5AF6-4C73-A621-0FD0F5BF9C40}
+		{C65B7701-7216-4F5B-8F3E-AEE73795D221} = {8692340C-5AF6-4C73-A621-0FD0F5BF9C40}
+		{C7CF90C8-C705-4B7F-BB3E-5D638D0DBFE6} = {8692340C-5AF6-4C73-A621-0FD0F5BF9C40}
+		{EB010819-4B09-4F7C-BAD4-86804A2FB803} = {8692340C-5AF6-4C73-A621-0FD0F5BF9C40}
+	EndGlobalSection
+EndGlobal

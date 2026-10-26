@@ -1,0 +1,70 @@
+@model IncidentIndexViewModel
+@{
+    ViewData["Title"] = "Инциденти";
+    var pager = new PagerViewModel
+    {
+        CurrentPage = Model.Result.Page,
+        TotalPages = Model.Result.TotalPages,
+        RouteValues = new Dictionary<string, string?>
+        {
+            ["searchTerm"] = Model.SearchTerm,
+            ["severity"] = Model.Severity?.ToString(),
+            ["status"] = Model.Status?.ToString(),
+            ["siteId"] = Model.SiteId?.ToString(),
+        },
+    };
+}
+
+<div class="gp-page-header d-flex flex-wrap justify-content-between align-items-end gap-3">
+    <div>
+        <h1>Дневник на инцидентите</h1>
+        <p class="text-muted mb-0">Намерени инциденти: @Model.Result.TotalCount · отворените са показани първи</p>
+    </div>
+    <a class="btn btn-danger" asp-action="Create"><i class="bi bi-megaphone"></i> Подай сигнал</a>
+</div>
+
+<form method="get" asp-action="Index" class="gp-filters row g-2 align-items-end mb-4">
+    <div class="col-lg-3 col-md-6">
+        <label for="searchTerm" class="form-label">Търсене</label>
+        <input type="search" id="searchTerm" name="searchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Заглавие или описание" />
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <label for="siteId" class="form-label">Обект</label>
+        <select id="siteId" name="siteId" class="form-select">
+            <option value="">Всички обекти</option>
+            @foreach (var site in Model.Sites)
+            {
+                <option value="@site.Id" selected="@(site.Id == Model.SiteId)">@site.Text</option>
+            }
+        </select>
+    </div>
+    <div class="col-lg-2 col-md-4">
+        <label for="severity" class="form-label">Сериозност</label>
+        <select id="severity" name="severity" class="form-select">
+            <option value="">Всички</option>
+            @foreach (IncidentSeverity severity in Enum.GetValues<IncidentSeverity>())
+            {
+                <option value="@severity" selected="@(severity == Model.Severity)">@severity.GetDisplayName()</option>
+            }
+        </select>
+    </div>
+    <div class="col-lg-2 col-md-4">
+        <label for="status" class="form-label">Статус</label>
+        <select id="status" name="status" class="form-select">
+            <option value="">Всички</option>
+            @foreach (IncidentStatus status in Enum.GetValues<IncidentStatus>())
+            {
+                <option value="@status" selected="@(status == Model.Status)">@status.GetDisplayName()</option>
+            }
+        </select>
+    </div>
+    <div class="col-lg-2 col-md-4 d-grid">
+        <button type="submit" class="btn btn-outline-dark"><i class="bi bi-funnel"></i> Филтрирай</button>
+    </div>
+</form>
+
+<div class="gp-card">
+    <partial name="_IncidentTablePartial" model="Model.Result.Items"
+             view-data='new ViewDataDictionary(ViewData) { ["EmptyText"] = "Няма инциденти, отговарящи на филтъра." }' />
+</div>
+<partial name="_PaginationPartial" model="pager" />

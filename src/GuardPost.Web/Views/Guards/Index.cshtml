@@ -1,0 +1,99 @@
+@model GuardIndexViewModel
+@{
+    ViewData["Title"] = "Охранители";
+    var pager = new PagerViewModel
+    {
+        CurrentPage = Model.Result.Page,
+        TotalPages = Model.Result.TotalPages,
+        RouteValues = new Dictionary<string, string?>
+        {
+            ["searchTerm"] = Model.SearchTerm,
+            ["rank"] = Model.Rank?.ToString(),
+            ["showInactive"] = Model.ShowInactive.ToString().ToLowerInvariant(),
+        },
+    };
+}
+
+<div class="gp-page-header d-flex flex-wrap justify-content-between align-items-end gap-3">
+    <div>
+        <h1>Охранителен персонал</h1>
+        <p class="text-muted mb-0">Намерени охранители: @Model.Result.TotalCount · часовете са за @DateTime.Now.ToString("MMMM yyyy")</p>
+    </div>
+    <a class="btn btn-gp" asp-action="Create"><i class="bi bi-person-plus"></i> Нов охранител</a>
+</div>
+
+<form method="get" asp-action="Index" class="gp-filters row g-2 align-items-end mb-4">
+    <div class="col-md-5">
+        <label for="searchTerm" class="form-label">Търсене</label>
+        <input type="search" id="searchTerm" name="searchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Име, удостоверение или телефон" />
+    </div>
+    <div class="col-md-3">
+        <label for="rank" class="form-label">Ранг</label>
+        <select id="rank" name="rank" class="form-select">
+            <option value="">Всички рангове</option>
+            @foreach (GuardRank rank in Enum.GetValues<GuardRank>())
+            {
+                <option value="@rank" selected="@(rank == Model.Rank)">@rank.GetDisplayName()</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="showInactive" name="showInactive" value="true" checked="@Model.ShowInactive" />
+            <label class="form-check-label" for="showInactive">Покажи неактивните</label>
+        </div>
+    </div>
+    <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-outline-dark"><i class="bi bi-funnel"></i> Филтрирай</button>
+    </div>
+</form>
+
+@if (!Model.Result.Items.Any())
+{
+    <div class="gp-empty-state">
+        <i class="bi bi-person-x"></i>
+        <p class="text-muted">Няма охранители, отговарящи на филтъра.</p>
+    </div>
+}
+else
+{
+    <div class="gp-card p-0">
+        <div class="table-responsive">
+            <table class="table align-middle gp-table mb-0">
+                <thead>
+                    <tr>
+                        <th>Име</th>
+                        <th>Удостоверение</th>
+                        <th class="d-none d-md-table-cell">Телефон</th>
+                        <th>Ранг</th>
+                        <th class="text-end">Часове този месец</th>
+                        <th class="text-end">Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var guard in Model.Result.Items)
+                    {
+                        <tr class="@(guard.IsActive ? "" : "gp-muted")">
+                            <td>
+                                <a asp-action="Details" asp-route-id="@guard.Id" class="fw-semibold">@guard.FullName</a>
+                                @if (!guard.IsActive)
+                                {
+                                    <span class="badge bg-secondary ms-1">Неактивен</span>
+                                }
+                            </td>
+                            <td><code>@guard.LicenseNumber</code></td>
+                            <td class="d-none d-md-table-cell">@guard.PhoneNumber</td>
+                            <td><span class="gp-rank gp-rank-@guard.Rank.ToString().ToLowerInvariant()">@guard.Rank.GetDisplayName()</span></td>
+                            <td class="text-end">@guard.HoursThisMonth.ToString("0.#")</td>
+                            <td class="text-end text-nowrap">
+                                <a asp-action="Edit" asp-route-id="@guard.Id" class="btn btn-sm btn-outline-secondary" title="Редактирай"><i class="bi bi-pencil"></i></a>
+                                <a asp-action="Delete" asp-route-id="@guard.Id" class="btn btn-sm btn-outline-danger" title="Изтрий"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <partial name="_PaginationPartial" model="pager" />
+}

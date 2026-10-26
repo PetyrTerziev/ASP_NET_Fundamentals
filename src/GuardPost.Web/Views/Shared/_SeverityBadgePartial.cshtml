@@ -1,0 +1,11 @@
+@model IncidentSeverity
+@{
+    string css = Model switch
+    {
+        IncidentSeverity.Critical => "gp-sev gp-sev-critical",
+        IncidentSeverity.High => "gp-sev gp-sev-high",
+        IncidentSeverity.Medium => "gp-sev gp-sev-medium",
+        _ => "gp-sev gp-sev-low",
+    };
+}
+<span class="@css">@Model.GetDisplayName()</span>

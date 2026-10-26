@@ -1,0 +1,9 @@
+@model string
+@* Simple page title with optional subtitle passed through ViewData["Subtitle"]. *@
+<div class="gp-page-header">
+    <h1>@Model</h1>
+    @if (ViewData["Subtitle"] is string subtitle)
+    {
+        <p class="text-muted mb-0">@subtitle</p>
+    }
+</div>

@@ -1,0 +1,48 @@
+@model GuardFormViewModel
+
+<div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+<input type="hidden" asp-for="Id" />
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <label asp-for="FirstName" class="form-label"></label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="LastName" class="form-label"></label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="LicenseNumber" class="form-label"></label>
+        <input asp-for="LicenseNumber" class="form-control text-uppercase" placeholder="ОХ-123456" />
+        <span asp-validation-for="LicenseNumber" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Rank" class="form-label"></label>
+        <select asp-for="Rank" asp-items="Html.GetEnumSelectList<GuardRank>()" class="form-select"></select>
+        <span asp-validation-for="Rank" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="PhoneNumber" class="form-label"></label>
+        <input asp-for="PhoneNumber" class="form-control" placeholder="+359 888 123 456" />
+        <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" placeholder="по желание" />
+        <span asp-validation-for="Email" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="HireDate" class="form-label"></label>
+        <input asp-for="HireDate" class="form-control" />
+        <span asp-validation-for="HireDate" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6 d-flex align-items-end">
+        <div class="form-check form-switch mb-2">
+            <input asp-for="IsActive" class="form-check-input" role="switch" />
+            <label asp-for="IsActive" class="form-check-label"></label>
+        </div>
+    </div>
+</div>

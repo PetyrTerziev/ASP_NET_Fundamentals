@@ -1,0 +1,26 @@
+@model GuardDeleteViewModel
+@{
+    ViewData["Title"] = "Изтриване на охранител";
+}
+<partial name="_PageHeaderPartial" model='"Изтриване на охранител"' />
+
+<div class="gp-card gp-form-card gp-danger-card">
+    <p class="lead mb-3">Сигурни ли сте, че искате да изтриете <strong>@Model.FullName</strong>?</p>
+    <dl class="gp-dl">
+        <dt>Удостоверение</dt>
+        <dd><code>@Model.LicenseNumber</code></dd>
+        <dt>Ранг</dt>
+        <dd>@Model.Rank.GetDisplayName()</dd>
+    </dl>
+    @if (Model.FutureShiftsCount > 0)
+    {
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle"></i>
+            <strong>Бъдещи смени: @Model.FutureShiftsCount</strong> – те ще бъдат премахнати, не забравяйте да ги покриете с друг охранител.
+        </div>
+    }
+    <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="gp-form-actions">
+        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Да, изтрий</button>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Отказ</a>
+    </form>
+</div>

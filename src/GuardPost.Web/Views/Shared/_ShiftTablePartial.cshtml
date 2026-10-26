@@ -1,0 +1,54 @@
+@model IEnumerable<ShiftListItemViewModel>
+@{
+    bool showSite = ViewData["ShowSite"] as bool? ?? true;
+    bool showGuard = ViewData["ShowGuard"] as bool? ?? true;
+    string emptyText = ViewData["EmptyText"] as string ?? "Няма смени.";
+    var now = DateTime.Now;
+}
+@if (!Model.Any())
+{
+    <p class="text-muted fst-italic mb-0">@emptyText</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm align-middle gp-table mb-0">
+            <thead>
+                <tr>
+                    <th>Кога</th>
+                    @if (showSite) { <th>Обект</th> }
+                    @if (showGuard) { <th>Охранител</th> }
+                    <th class="text-end">Часове</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var shift in Model)
+                {
+                    <tr class="@(shift.IsOngoing(now) ? "gp-row-live" : "")">
+                        <td class="text-nowrap">
+                            <i class="bi @(shift.IsNightShift ? "bi-moon-stars" : "bi-sun") me-1 text-muted"></i>
+                            @shift.StartTime.ToString(ApplicationConstants.DateTimeFormat) – @shift.EndTime.ToString(ApplicationConstants.TimeFormat)
+                            @if (shift.IsOngoing(now))
+                            {
+                                <span class="gp-live-dot ms-1" title="На смяна в момента"></span>
+                            }
+                        </td>
+                        @if (showSite)
+                        {
+                            <td><a asp-controller="Sites" asp-action="Details" asp-route-id="@shift.SiteId">@shift.SiteName</a></td>
+                        }
+                        @if (showGuard)
+                        {
+                            <td><a asp-controller="Guards" asp-action="Details" asp-route-id="@shift.GuardId">@shift.GuardName</a></td>
+                        }
+                        <td class="text-end">@shift.DurationHours.ToString("0.#")</td>
+                        <td class="text-end">
+                            <a class="btn btn-link btn-sm p-0" asp-controller="Shifts" asp-action="Details" asp-route-id="@shift.Id" title="Детайли за смяната"><i class="bi bi-chevron-right"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -1,0 +1,95 @@
+@model SiteIndexViewModel
+@{
+    ViewData["Title"] = "Обекти";
+    var pager = new PagerViewModel
+    {
+        CurrentPage = Model.Result.Page,
+        TotalPages = Model.Result.TotalPages,
+        RouteValues = new Dictionary<string, string?>
+        {
+            ["searchTerm"] = Model.SearchTerm,
+            ["city"] = Model.City,
+            ["showInactive"] = Model.ShowInactive.ToString().ToLowerInvariant(),
+        },
+    };
+}
+
+<div class="gp-page-header d-flex flex-wrap justify-content-between align-items-end gap-3">
+    <div>
+        <h1>Охранявани обекти</h1>
+        <p class="text-muted mb-0">Намерени обекти: @Model.Result.TotalCount</p>
+    </div>
+    <a class="btn btn-gp" asp-action="Create"><i class="bi bi-plus-lg"></i> Нов обект</a>
+</div>
+
+<form method="get" asp-action="Index" class="gp-filters row g-2 align-items-end mb-4">
+    <div class="col-md-5">
+        <label for="searchTerm" class="form-label">Търсене</label>
+        <input type="search" id="searchTerm" name="searchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Име, възложител или адрес" />
+    </div>
+    <div class="col-md-3">
+        <label for="city" class="form-label">Град</label>
+        <select id="city" name="city" class="form-select">
+            <option value="">Всички градове</option>
+            @foreach (var city in Model.Cities)
+            {
+                <option value="@city" selected="@(city == Model.City)">@city</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="showInactive" name="showInactive" value="true" checked="@Model.ShowInactive" />
+            <label class="form-check-label" for="showInactive">Покажи неактивните</label>
+        </div>
+    </div>
+    <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-outline-dark"><i class="bi bi-funnel"></i> Филтрирай</button>
+    </div>
+</form>
+
+@if (!Model.Result.Items.Any())
+{
+    <div class="gp-empty-state">
+        <i class="bi bi-building-slash"></i>
+        <p class="text-muted">Няма обекти, отговарящи на филтъра.</p>
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 g-3">
+        @foreach (var site in Model.Result.Items)
+        {
+            <div class="col">
+                <article class="gp-card gp-site-card h-100 @(site.IsActive ? "" : "gp-muted")">
+                    <div class="d-flex justify-content-between align-items-start gap-2">
+                        <div>
+                            <h2 class="h5 mb-1">
+                                <a asp-action="Details" asp-route-id="@site.Id">@site.Name</a>
+                            </h2>
+                            <p class="text-muted small mb-2"><i class="bi bi-geo-alt"></i> @site.Address, @site.City</p>
+                        </div>
+                        @if (!site.IsActive)
+                        {
+                            <span class="badge bg-secondary">Неактивен</span>
+                        }
+                    </div>
+                    <p class="small mb-3"><i class="bi bi-briefcase"></i> @site.ClientName</p>
+                    <div class="d-flex flex-wrap gap-3 small gp-site-meta">
+                        <span title="Необходими охранители на смяна"><i class="bi bi-people"></i> @site.RequiredGuardsPerShift на смяна</span>
+                        <span title="Предстоящи смени"><i class="bi bi-calendar-event"></i> @site.UpcomingShiftsCount предстоящи</span>
+                        <span class="@(site.OpenIncidentsCount > 0 ? "text-danger fw-semibold" : "")" title="Отворени инциденти">
+                            <i class="bi bi-exclamation-triangle"></i> @site.OpenIncidentsCount отворени
+                        </span>
+                    </div>
+                    <div class="gp-card-actions">
+                        <a asp-action="Details" asp-route-id="@site.Id" class="btn btn-sm btn-outline-dark">Детайли</a>
+                        <a asp-action="Edit" asp-route-id="@site.Id" class="btn btn-sm btn-outline-secondary">Редактирай</a>
+                        <a asp-action="Delete" asp-route-id="@site.Id" class="btn btn-sm btn-outline-danger">Изтрий</a>
+                    </div>
+                </article>
+            </div>
+        }
+    </div>
+    <partial name="_PaginationPartial" model="pager" />
+}

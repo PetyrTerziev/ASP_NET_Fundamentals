@@ -1,0 +1,37 @@
+@model ShiftListItemViewModel
+@{
+    ViewData["Title"] = "Детайли за смяната";
+    var now = DateTime.Now;
+    string state = Model.IsOngoing(now) ? "В момента тече" : Model.EndTime <= now ? "Приключила" : "Планирана";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a asp-action="Index" asp-route-weekStart="@Model.StartTime.StartOfWeek().ToString("yyyy-MM-dd")">График</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Смяна №@Model.Id</li>
+    </ol>
+</nav>
+
+<div class="gp-page-header d-flex flex-wrap justify-content-between align-items-end gap-3">
+    <div>
+        <p class="gp-eyebrow mb-1">@state</p>
+        <h1>@Model.StartTime.ToString(ApplicationConstants.DateTimeFormat) – @Model.EndTime.ToString(ApplicationConstants.DateTimeFormat)</h1>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-dark"><i class="bi bi-pencil"></i> Редактирай</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger"><i class="bi bi-trash"></i> Изтрий</a>
+    </div>
+</div>
+
+<div class="gp-card gp-form-card">
+    <dl class="gp-dl mb-0">
+        <dt>Обект</dt>
+        <dd><a asp-controller="Sites" asp-action="Details" asp-route-id="@Model.SiteId">@Model.SiteName</a></dd>
+        <dt>Охранител</dt>
+        <dd><a asp-controller="Guards" asp-action="Details" asp-route-id="@Model.GuardId">@Model.GuardName</a></dd>
+        <dt>Продължителност</dt>
+        <dd>@Model.DurationHours.ToString("0.#") часа @(Model.IsNightShift ? "(нощна смяна)" : "(дневна смяна)")</dd>
+        <dt>Бележки</dt>
+        <dd class="gp-pre">@(string.IsNullOrWhiteSpace(Model.Notes) ? "—" : Model.Notes)</dd>
+    </dl>
+</div>

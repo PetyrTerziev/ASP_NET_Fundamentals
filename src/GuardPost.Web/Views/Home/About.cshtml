@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "За проекта";
+    ViewData["Subtitle"] = "Какво представлява ГардПост и как е изграден.";
+}
+<partial name="_PageHeaderPartial" model='"За ГардПост"' />
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <section class="gp-card">
+            <h2 class="gp-card-title">Идеята</h2>
+            <p>
+                Малките охранителни фирми често планират охранителите си в електронни таблици. ГардПост заменя таблицата с
+                едно място, в което ръководителят поддържа <strong>охраняваните обекти</strong>, <strong>охранителния персонал</strong>,
+                <strong>седмичния график на смените</strong> и <strong>дневника на инцидентите</strong>.
+            </p>
+            <p class="mb-0">
+                Графикът пази както клиентите, така и охранителите: приложението не допуска застъпващи се смени и изисква
+                поне @EntityValidationConstants.Shift.MinRestHours часа почивка между две смени на един и същи човек, а таблото
+                показва в реално време дали всеки обект има толкова охранители, колкото изисква договорът.
+            </p>
+        </section>
+    </div>
+    <div class="col-lg-5">
+        <section class="gp-card">
+            <h2 class="gp-card-title">Технологии</h2>
+            <ul class="mb-0">
+                <li>ASP.NET Core 8 MVC, Razor изгледи с layout, секции и частични изгледи</li>
+                <li>Entity Framework Core 8 + SQL Server, code-first миграции</li>
+                <li>Слоеста архитектура: Data, Services, ViewModels, Web</li>
+                <li>Dependency Injection за всички услуги</li>
+                <li>Валидация на сървъра и в браузъра (вкл. собствени атрибути и remote валидация)</li>
+                <li>Адаптивен интерфейс с Bootstrap 5</li>
+            </ul>
+        </section>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+@model IEnumerable<IncidentListItemViewModel>
+@{
+    bool showSite = ViewData["ShowSite"] as bool? ?? true;
+    string emptyText = ViewData["EmptyText"] as string ?? "Няма инциденти.";
+}
+@if (!Model.Any())
+{
+    <p class="text-muted fst-italic mb-0">@emptyText</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm align-middle gp-table mb-0">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Инцидент</th>
+                    @if (showSite) { <th>Обект</th> }
+                    <th>Сериозност</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var incident in Model)
+                {
+                    <tr>
+                        <td class="text-nowrap">@incident.OccurredOn.ToString(ApplicationConstants.DateTimeFormat)</td>
+                        <td><a asp-controller="Incidents" asp-action="Details" asp-route-id="@incident.Id">@incident.Title</a></td>
+                        @if (showSite)
+                        {
+                            <td><a asp-controller="Sites" asp-action="Details" asp-route-id="@incident.SiteId">@incident.SiteName</a></td>
+                        }
+                        <td><partial name="_SeverityBadgePartial" model="incident.Severity" /></td>
+                        <td><partial name="_IncidentStatusBadgePartial" model="incident.Status" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

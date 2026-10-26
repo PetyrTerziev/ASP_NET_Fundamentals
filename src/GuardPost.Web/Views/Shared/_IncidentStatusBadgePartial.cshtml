@@ -1,0 +1,10 @@
+@model IncidentStatus
+@{
+    (string css, string icon) = Model switch
+    {
+        IncidentStatus.Resolved => ("bg-success", "bi-check2-circle"),
+        IncidentStatus.InProgress => ("bg-warning text-dark", "bi-hourglass-split"),
+        _ => ("bg-danger", "bi-circle-fill"),
+    };
+}
+<span class="badge rounded-pill @css"><i class="bi @icon"></i> @Model.GetDisplayName()</span>

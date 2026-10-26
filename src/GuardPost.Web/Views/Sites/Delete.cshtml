@@ -1,0 +1,26 @@
+@model SiteDeleteViewModel
+@{
+    ViewData["Title"] = "Изтриване на обект";
+}
+<partial name="_PageHeaderPartial" model='"Изтриване на обект"' />
+
+<div class="gp-card gp-form-card gp-danger-card">
+    <p class="lead mb-3">Сигурни ли сте, че искате да изтриете <strong>@Model.Name</strong>?</p>
+    <dl class="gp-dl">
+        <dt>Адрес</dt>
+        <dd>@Model.Address, @Model.City</dd>
+        <dt>Възложител</dt>
+        <dd>@Model.ClientName</dd>
+    </dl>
+    @if (Model.FutureShiftsCount > 0)
+    {
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle"></i>
+            <strong>Бъдещи смени: @Model.FutureShiftsCount</strong> – те ще бъдат премахнати от графика.
+        </div>
+    }
+    <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="gp-form-actions">
+        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Да, изтрий</button>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Отказ</a>
+    </form>
+</div>

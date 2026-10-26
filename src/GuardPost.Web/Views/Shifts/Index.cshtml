@@ -1,0 +1,90 @@
+@model ShiftWeekViewModel
+@{
+    ViewData["Title"] = "График";
+    string Week(DateTime date) => date.ToString("yyyy-MM-dd");
+}
+
+<div class="gp-page-header d-flex flex-wrap justify-content-between align-items-end gap-3">
+    <div>
+        <h1>Седмичен график</h1>
+        <p class="text-muted mb-0">
+            @Model.WeekStart.ToString(ApplicationConstants.DateFormat) – @Model.WeekEnd.ToString(ApplicationConstants.DateFormat)
+            · смени: @Model.TotalShifts · @Model.TotalHours.ToString("0.#") ч.
+        </p>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+        <div class="btn-group" role="group" aria-label="Навигация по седмици">
+            <a class="btn btn-outline-dark" asp-action="Index" asp-route-weekStart="@Week(Model.WeekStart.AddDays(-7))"
+               asp-route-siteId="@Model.SiteId" asp-route-guardId="@Model.GuardId" title="Предишна седмица">&lsaquo; Назад</a>
+            <a class="btn btn-outline-dark" asp-action="Index" asp-route-siteId="@Model.SiteId" asp-route-guardId="@Model.GuardId">Тази седмица</a>
+            <a class="btn btn-outline-dark" asp-action="Index" asp-route-weekStart="@Week(Model.WeekStart.AddDays(7))"
+               asp-route-siteId="@Model.SiteId" asp-route-guardId="@Model.GuardId" title="Следваща седмица">Напред &rsaquo;</a>
+        </div>
+        <a class="btn btn-gp" asp-action="Create"><i class="bi bi-plus-lg"></i> Нова смяна</a>
+    </div>
+</div>
+
+<form method="get" asp-action="Index" class="gp-filters row g-2 align-items-end mb-4">
+    <input type="hidden" name="weekStart" value="@Week(Model.WeekStart)" />
+    <div class="col-md-5">
+        <label for="siteId" class="form-label">Обект</label>
+        <select id="siteId" name="siteId" class="form-select">
+            <option value="">Всички обекти</option>
+            @foreach (var site in Model.Sites)
+            {
+                <option value="@site.Id" selected="@(site.Id == Model.SiteId)">@site.Text</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-5">
+        <label for="guardId" class="form-label">Охранител</label>
+        <select id="guardId" name="guardId" class="form-select">
+            <option value="">Всички охранители</option>
+            @foreach (var guard in Model.Guards)
+            {
+                <option value="@guard.Id" selected="@(guard.Id == Model.GuardId)">@guard.Text</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-outline-dark"><i class="bi bi-funnel"></i> Филтрирай</button>
+    </div>
+</form>
+
+<div class="gp-week">
+    @foreach (var day in Model.Days)
+    {
+        bool isToday = day.Date == Model.Now.Date;
+        <section class="gp-day @(isToday ? "gp-day-today" : "")">
+            <header class="gp-day-header">
+                <span>@day.Date.ToString(ApplicationConstants.DayHeaderFormat)</span>
+                @if (isToday)
+                {
+                    <span class="badge bg-warning text-dark">Днес</span>
+                }
+            </header>
+            <div class="gp-day-body">
+                @foreach (var shift in day.Shifts)
+                {
+                    <a class="gp-shift @(shift.IsNightShift ? "gp-shift-night" : "") @(shift.IsOngoing(Model.Now) ? "gp-shift-live" : "")"
+                       asp-action="Details" asp-route-id="@shift.Id">
+                        <span class="gp-shift-time">
+                            <i class="bi @(shift.IsNightShift ? "bi-moon-stars" : "bi-sun")"></i>
+                            @shift.StartTime.ToString(ApplicationConstants.TimeFormat)–@shift.EndTime.ToString(ApplicationConstants.TimeFormat)
+                        </span>
+                        <span class="gp-shift-site">@shift.SiteName</span>
+                        <span class="gp-shift-guard"><i class="bi bi-person"></i> @shift.GuardName</span>
+                    </a>
+                }
+                @if (!day.Shifts.Any())
+                {
+                    <p class="text-muted small fst-italic mb-2">Няма смени</p>
+                }
+                <a class="gp-day-add" asp-action="Create" asp-route-date="@Week(day.Date)"
+                   asp-route-siteId="@Model.SiteId" asp-route-guardId="@Model.GuardId">
+                    <i class="bi bi-plus"></i> Добави
+                </a>
+            </div>
+        </section>
+    }
+</div>

@@ -1,0 +1,20 @@
+@model GuardFormViewModel
+@{
+    ViewData["Title"] = "Редактиране на охранител";
+    ViewData["Subtitle"] = $"{Model.FirstName} {Model.LastName}";
+}
+<partial name="_PageHeaderPartial" model='"Редактиране на охранител"' />
+
+<div class="gp-card gp-form-card">
+    <form asp-action="Edit" asp-route-id="@Model.Id" method="post" novalidate>
+        <partial name="_GuardFormFields" model="Model" />
+        <div class="gp-form-actions">
+            <button type="submit" class="btn btn-gp"><i class="bi bi-check-lg"></i> Запази промените</button>
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Отказ</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

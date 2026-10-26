@@ -1,0 +1,89 @@
+@model GuardDetailsViewModel
+@{
+    ViewData["Title"] = Model.FullName;
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a asp-action="Index">Охранители</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.FullName</li>
+    </ol>
+</nav>
+
+<div class="gp-page-header d-flex flex-wrap justify-content-between align-items-end gap-3">
+    <div class="d-flex align-items-center gap-3">
+        <span class="gp-avatar">@Model.FirstName[0]@Model.LastName[0]</span>
+        <div>
+            <h1 class="mb-1">
+                @Model.FullName
+                @if (!Model.IsActive)
+                {
+                    <span class="badge bg-secondary align-middle fs-6">Неактивен</span>
+                }
+            </h1>
+            <span class="gp-rank gp-rank-@Model.Rank.ToString().ToLowerInvariant()">@Model.Rank.GetDisplayName()</span>
+            <code class="ms-2">@Model.LicenseNumber</code>
+        </div>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+        <a asp-controller="Shifts" asp-action="Index" asp-route-guardId="@Model.Id" class="btn btn-outline-dark"><i class="bi bi-calendar-week"></i> График</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-dark"><i class="bi bi-pencil"></i> Редактирай</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger"><i class="bi bi-trash"></i> Изтрий</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <section class="gp-card mb-4">
+            <h2 class="gp-card-title">Контакти</h2>
+            <dl class="gp-dl mb-0">
+                <dt>Телефон</dt>
+                <dd><a href="tel:@Model.PhoneNumber.Replace(" ", "")">@Model.PhoneNumber</a></dd>
+                <dt>Имейл</dt>
+                <dd>
+                    @if (string.IsNullOrEmpty(Model.Email))
+                    {
+                        <span class="text-muted">—</span>
+                    }
+                    else
+                    {
+                        <a href="mailto:@Model.Email">@Model.Email</a>
+                    }
+                </dd>
+                <dt>Назначен на</dt>
+                <dd>@Model.HireDate.ToString(ApplicationConstants.DateFormat)</dd>
+            </dl>
+        </section>
+        <section class="gp-card">
+            <h2 class="gp-card-title">@DateTime.Now.ToString("MMMM yyyy")</h2>
+            <div class="d-flex gap-4">
+                <div>
+                    <div class="gp-stat-value">@Model.ShiftsThisMonth</div>
+                    <div class="gp-stat-label">смени</div>
+                </div>
+                <div>
+                    <div class="gp-stat-value">@Model.HoursThisMonth.ToString("0.#")</div>
+                    <div class="gp-stat-label">часа</div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-8 d-flex flex-column gap-4">
+        <section class="gp-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="gp-card-title">Предстоящи смени</h2>
+                @if (Model.IsActive)
+                {
+                    <a class="btn btn-sm btn-gp" asp-controller="Shifts" asp-action="Create" asp-route-guardId="@Model.Id"><i class="bi bi-plus-lg"></i> Възложи смяна</a>
+                }
+            </div>
+            <partial name="_ShiftTablePartial" model="Model.UpcomingShifts"
+                     view-data='new ViewDataDictionary(ViewData) { ["ShowGuard"] = false, ["EmptyText"] = "Няма предстоящи смени." }' />
+        </section>
+        <section class="gp-card">
+            <h2 class="gp-card-title">Докладвани инциденти</h2>
+            <partial name="_IncidentTablePartial" model="Model.ReportedIncidents"
+                     view-data='new ViewDataDictionary(ViewData) { ["EmptyText"] = "Този охранител не е докладвал инциденти." }' />
+        </section>
+    </div>
+</div>

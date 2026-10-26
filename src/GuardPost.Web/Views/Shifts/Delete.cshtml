@@ -1,0 +1,21 @@
+@model ShiftListItemViewModel
+@{
+    ViewData["Title"] = "Изтриване на смяна";
+}
+<partial name="_PageHeaderPartial" model='"Изтриване на смяна"' />
+
+<div class="gp-card gp-form-card gp-danger-card">
+    <p class="lead mb-3">Да се премахне ли тази смяна от графика?</p>
+    <dl class="gp-dl">
+        <dt>Кога</dt>
+        <dd>@Model.StartTime.ToString(ApplicationConstants.DateTimeFormat) – @Model.EndTime.ToString(ApplicationConstants.DateTimeFormat)</dd>
+        <dt>Обект</dt>
+        <dd>@Model.SiteName</dd>
+        <dt>Охранител</dt>
+        <dd>@Model.GuardName</dd>
+    </dl>
+    <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="gp-form-actions">
+        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Да, изтрий</button>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Отказ</a>
+    </form>
+</div>

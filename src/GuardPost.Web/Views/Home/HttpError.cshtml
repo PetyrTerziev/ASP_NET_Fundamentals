@@ -1,0 +1,15 @@
+@model ErrorViewModel
+@{
+    bool notFound = Model.StatusCode == 404;
+    ViewData["Title"] = notFound ? "Не е намерено" : $"Грешка {Model.StatusCode}";
+}
+<div class="gp-empty-state">
+    <i class="bi @(notFound ? "bi-signpost-split" : "bi-exclamation-octagon")"></i>
+    <h1>@(notFound ? "Тук няма какво да се охранява" : $"Грешка {Model.StatusCode}")</h1>
+    <p class="text-muted">
+        @(notFound
+            ? "Страницата или записът, който търсите, не съществува или е изтрит."
+            : "Заявката не може да бъде изпълнена.")
+    </p>
+    <a class="btn btn-gp" asp-controller="Home" asp-action="Index">Към таблото</a>
+</div>

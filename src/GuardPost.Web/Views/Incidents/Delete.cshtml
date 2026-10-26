@@ -1,0 +1,21 @@
+@model IncidentDetailsViewModel
+@{
+    ViewData["Title"] = "Изтриване на инцидент";
+}
+<partial name="_PageHeaderPartial" model='"Изтриване на инцидент"' />
+
+<div class="gp-card gp-form-card gp-danger-card">
+    <p class="lead mb-3">Да се изтрие ли инцидентът <strong>@Model.Title</strong>? Действието е необратимо.</p>
+    <dl class="gp-dl">
+        <dt>Обект</dt>
+        <dd>@Model.SiteName</dd>
+        <dt>Дата на събитието</dt>
+        <dd>@Model.OccurredOn.ToString(ApplicationConstants.DateTimeFormat)</dd>
+        <dt>Сериозност</dt>
+        <dd><partial name="_SeverityBadgePartial" model="Model.Severity" /></dd>
+    </dl>
+    <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="gp-form-actions">
+        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Да, изтрий</button>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Отказ</a>
+    </form>
+</div>

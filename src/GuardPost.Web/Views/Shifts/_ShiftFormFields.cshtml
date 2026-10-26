@@ -1,0 +1,49 @@
+@model ShiftFormViewModel
+
+<div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+<input type="hidden" asp-for="Id" />
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <label asp-for="SiteId" class="form-label"></label>
+        <select asp-for="SiteId" asp-items="@(new SelectList(Model.Sites, nameof(DropdownItemViewModel.Id), nameof(DropdownItemViewModel.Text)))" class="form-select">
+            <option value="">— изберете обект —</option>
+        </select>
+        <span asp-validation-for="SiteId" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="GuardId" class="form-label"></label>
+        <select asp-for="GuardId" asp-items="@(new SelectList(Model.Guards, nameof(DropdownItemViewModel.Id), nameof(DropdownItemViewModel.Text)))" class="form-select">
+            <option value="">— изберете охранител —</option>
+        </select>
+        <span asp-validation-for="GuardId" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="StartTime" class="form-label"></label>
+        <input asp-for="StartTime" class="form-control" />
+        <span asp-validation-for="StartTime" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="EndTime" class="form-label"></label>
+        <input asp-for="EndTime" class="form-control" />
+        <span asp-validation-for="EndTime" class="text-danger small"></span>
+    </div>
+    <div class="col-12">
+        <div class="d-flex flex-wrap gap-2 small" aria-label="Бърз избор на продължителност">
+            <span class="text-muted">Продължителност:</span>
+            <button type="button" class="btn btn-sm btn-outline-secondary" data-shift-hours="8">8 ч.</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" data-shift-hours="12">12 ч.</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" data-shift-hours="24">24 ч.</button>
+        </div>
+    </div>
+    <div class="col-12">
+        <label asp-for="Notes" class="form-label"></label>
+        <textarea asp-for="Notes" class="form-control" rows="3" placeholder="Допълнителни указания за смяната (по желание)"></textarea>
+        <span asp-validation-for="Notes" class="text-danger small"></span>
+    </div>
+</div>
+<p class="small text-muted mt-3 mb-0">
+    <i class="bi bi-info-circle"></i>
+    Смяната продължава от @EntityValidationConstants.Shift.MinDurationHours до @EntityValidationConstants.Shift.MaxDurationHours часа.
+    Един охранител не може да има застъпващи се смени и трябва да има поне @EntityValidationConstants.Shift.MinRestHours часа почивка между две смени.
+</p>

@@ -1,0 +1,48 @@
+@model SiteFormViewModel
+
+<div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+<input type="hidden" asp-for="Id" />
+
+<div class="row g-3">
+    <div class="col-md-8">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" placeholder="напр. Централен склад" />
+        <span asp-validation-for="Name" class="text-danger small"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="City" class="form-label"></label>
+        <input asp-for="City" class="form-control" />
+        <span asp-validation-for="City" class="text-danger small"></span>
+    </div>
+    <div class="col-12">
+        <label asp-for="Address" class="form-label"></label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="ClientName" class="form-label"></label>
+        <input asp-for="ClientName" class="form-control" />
+        <span asp-validation-for="ClientName" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="ContactPhone" class="form-label"></label>
+        <input asp-for="ContactPhone" class="form-control" placeholder="+359 42 600 111" />
+        <span asp-validation-for="ContactPhone" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="RequiredGuardsPerShift" class="form-label"></label>
+        <input asp-for="RequiredGuardsPerShift" class="form-control" min="@EntityValidationConstants.Site.RequiredGuardsMin" max="@EntityValidationConstants.Site.RequiredGuardsMax" />
+        <span asp-validation-for="RequiredGuardsPerShift" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6 d-flex align-items-end">
+        <div class="form-check form-switch mb-2">
+            <input asp-for="IsActive" class="form-check-input" role="switch" />
+            <label asp-for="IsActive" class="form-check-label"></label>
+        </div>
+    </div>
+    <div class="col-12">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="4" placeholder="Постови инструкции, маршрути за обход, специални указания..."></textarea>
+        <span asp-validation-for="Description" class="text-danger small"></span>
+    </div>
+</div>

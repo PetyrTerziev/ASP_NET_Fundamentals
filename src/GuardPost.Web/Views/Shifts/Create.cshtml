@@ -1,0 +1,20 @@
+@model ShiftFormViewModel
+@{
+    ViewData["Title"] = "Нова смяна";
+    ViewData["Subtitle"] = "Разпределете охранител на обект.";
+}
+<partial name="_PageHeaderPartial" model='"Нова смяна"' />
+
+<div class="gp-card gp-form-card">
+    <form asp-action="Create" method="post" novalidate>
+        <partial name="_ShiftFormFields" model="Model" />
+        <div class="gp-form-actions">
+            <button type="submit" class="btn btn-gp"><i class="bi bi-check-lg"></i> Добави в графика</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Отказ</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

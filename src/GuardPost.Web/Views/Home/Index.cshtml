@@ -1,0 +1,97 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Табло";
+}
+
+<div class="gp-page-header d-flex flex-wrap justify-content-between align-items-end gap-3">
+    <div>
+        <p class="gp-eyebrow mb-1">@Model.Now.ToString("dddd, dd MMMM yyyy · HH:mm")</p>
+        <h1>Оперативно табло</h1>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+        <a class="btn btn-gp" asp-controller="Shifts" asp-action="Create"><i class="bi bi-plus-lg"></i> Нова смяна</a>
+        <a class="btn btn-outline-danger" asp-controller="Incidents" asp-action="Create"><i class="bi bi-megaphone"></i> Подай сигнал</a>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <a class="gp-stat" asp-controller="Sites" asp-action="Index">
+            <span class="gp-stat-icon"><i class="bi bi-building"></i></span>
+            <span class="gp-stat-value">@Model.ActiveSites</span>
+            <span class="gp-stat-label">Активни обекти</span>
+        </a>
+    </div>
+    <div class="col-6 col-lg-3">
+        <a class="gp-stat" asp-controller="Guards" asp-action="Index">
+            <span class="gp-stat-icon"><i class="bi bi-person-badge"></i></span>
+            <span class="gp-stat-value">@Model.ActiveGuards</span>
+            <span class="gp-stat-label">Активни охранители</span>
+        </a>
+    </div>
+    <div class="col-6 col-lg-3">
+        <a class="gp-stat" asp-controller="Shifts" asp-action="Index">
+            <span class="gp-stat-icon"><i class="bi bi-calendar-check"></i></span>
+            <span class="gp-stat-value">@Model.ShiftsToday</span>
+            <span class="gp-stat-label">Смени днес</span>
+        </a>
+    </div>
+    <div class="col-6 col-lg-3">
+        <a class="gp-stat @(Model.OpenIncidents > 0 ? "gp-stat-alert" : "")" asp-controller="Incidents" asp-action="Index">
+            <span class="gp-stat-icon"><i class="bi bi-exclamation-triangle"></i></span>
+            <span class="gp-stat-value">@Model.OpenIncidents</span>
+            <span class="gp-stat-label">Отворени инциденти</span>
+        </a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-5">
+        <section class="gp-card h-100">
+            <h2 class="gp-card-title"><i class="bi bi-broadcast"></i> Покритие в момента</h2>
+            @if (!Model.Coverage.Any())
+            {
+                <p class="text-muted fst-italic mb-0">Няма активни обекти.</p>
+            }
+            <ul class="list-unstyled mb-0 gp-coverage">
+                @foreach (var site in Model.Coverage)
+                {
+                    int percent = site.Required == 0 ? 100 : Math.Min(100, site.OnDuty * 100 / site.Required);
+                    <li>
+                        <div class="d-flex justify-content-between">
+                            <a asp-controller="Sites" asp-action="Details" asp-route-id="@site.SiteId">@site.SiteName</a>
+                            <span class="@(site.IsCovered ? "text-success" : "text-danger") fw-semibold">
+                                @site.OnDuty / @site.Required
+                                <i class="bi @(site.IsCovered ? "bi-check-circle" : "bi-exclamation-circle")"></i>
+                            </span>
+                        </div>
+                        <div class="progress gp-progress" role="progressbar" aria-label="Покритие на @site.SiteName"
+                             aria-valuenow="@percent" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar @(site.IsCovered ? "bg-success" : "bg-danger")" style="width: @percent%"></div>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </section>
+    </div>
+    <div class="col-lg-7">
+        <section class="gp-card h-100">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="gp-card-title"><i class="bi bi-exclamation-diamond"></i> Отворени инциденти</h2>
+                <a class="small" asp-controller="Incidents" asp-action="Index" asp-route-status="@IncidentStatus.Open">Виж всички</a>
+            </div>
+            <partial name="_IncidentTablePartial" model="Model.LatestOpenIncidents"
+                     view-data='new ViewDataDictionary(ViewData) { ["EmptyText"] = "Всичко е спокойно – няма отворени инциденти." }' />
+        </section>
+    </div>
+    <div class="col-12">
+        <section class="gp-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="gp-card-title"><i class="bi bi-clock-history"></i> Смени за днес</h2>
+                <a class="small" asp-controller="Shifts" asp-action="Index">Седмичен график</a>
+            </div>
+            <partial name="_ShiftTablePartial" model="Model.TodayShifts"
+                     view-data='new ViewDataDictionary(ViewData) { ["EmptyText"] = "Няма планирани смени за днес." }' />
+        </section>
+    </div>
+</div>

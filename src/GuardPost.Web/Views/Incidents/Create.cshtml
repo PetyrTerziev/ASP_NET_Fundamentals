@@ -1,0 +1,20 @@
+@model IncidentFormViewModel
+@{
+    ViewData["Title"] = "Нов сигнал за инцидент";
+    ViewData["Subtitle"] = "Регистрирайте събитие, случило се на обект.";
+}
+<partial name="_PageHeaderPartial" model='"Нов сигнал за инцидент"' />
+
+<div class="gp-card gp-form-card">
+    <form asp-action="Create" method="post" novalidate>
+        <partial name="_IncidentFormFields" model="Model" />
+        <div class="gp-form-actions">
+            <button type="submit" class="btn btn-danger"><i class="bi bi-check-lg"></i> Регистрирай инцидента</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Отказ</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

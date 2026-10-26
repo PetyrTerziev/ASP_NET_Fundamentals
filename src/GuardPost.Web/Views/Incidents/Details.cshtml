@@ -1,0 +1,67 @@
+@model IncidentDetailsViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a asp-action="Index">Инциденти</a></li>
+        <li class="breadcrumb-item active" aria-current="page">#@Model.Id</li>
+    </ol>
+</nav>
+
+<div class="gp-page-header d-flex flex-wrap justify-content-between align-items-end gap-3">
+    <div>
+        <div class="d-flex gap-2 mb-2">
+            <partial name="_SeverityBadgePartial" model="Model.Severity" />
+            <partial name="_IncidentStatusBadgePartial" model="Model.Status" />
+        </div>
+        <h1>@Model.Title</h1>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-dark"><i class="bi bi-pencil"></i> Редактирай</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger"><i class="bi bi-trash"></i> Изтрий</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <section class="gp-card mb-4">
+            <h2 class="gp-card-title">Описание</h2>
+            <p class="gp-pre mb-0">@Model.Description</p>
+        </section>
+        @if (!string.IsNullOrWhiteSpace(Model.ResolutionNotes))
+        {
+            <section class="gp-card gp-resolution">
+                <h2 class="gp-card-title"><i class="bi bi-check2-circle"></i> Решение</h2>
+                <p class="gp-pre mb-0">@Model.ResolutionNotes</p>
+            </section>
+        }
+    </div>
+    <div class="col-lg-4">
+        <section class="gp-card">
+            <dl class="gp-dl mb-0">
+                <dt>Обект</dt>
+                <dd>
+                    <a asp-controller="Sites" asp-action="Details" asp-route-id="@Model.SiteId">@Model.SiteName</a>
+                    <div class="small text-muted">@Model.SiteAddress</div>
+                </dd>
+                <dt>Дата на събитието</dt>
+                <dd>@Model.OccurredOn.ToString(ApplicationConstants.DateTimeFormat)</dd>
+                <dt>Докладван от</dt>
+                <dd>
+                    @if (Model.ReportedByGuardId.HasValue && Model.ReportedBy != null)
+                    {
+                        <a asp-controller="Guards" asp-action="Details" asp-route-id="@Model.ReportedByGuardId">@Model.ReportedBy</a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">—</span>
+                    }
+                </dd>
+                <dt>Регистриран на</dt>
+                <dd>@Model.CreatedOn.ToString(ApplicationConstants.DateTimeFormat)</dd>
+            </dl>
+        </section>
+    </div>
+</div>

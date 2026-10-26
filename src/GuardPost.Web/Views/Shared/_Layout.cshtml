@@ -1,0 +1,74 @@
+@{
+    string? currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    string NavClass(string controller) =>
+        string.Equals(controller, currentController, StringComparison.OrdinalIgnoreCase) ? "nav-link active" : "nav-link";
+}
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] · @ApplicationConstants.ApplicationName</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark gp-navbar">
+            <div class="container">
+                <a class="navbar-brand gp-brand" asp-controller="Home" asp-action="Index">
+                    <span class="gp-brand-mark"><i class="bi bi-shield-shaded"></i></span>
+                    <span class="gp-brand-text">Гард<span>Пост</span></span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                        aria-controls="mainNav" aria-expanded="false" aria-label="Меню">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav ms-auto gap-lg-1">
+                        <li class="nav-item">
+                            <a class="@NavClass("Home")" asp-controller="Home" asp-action="Index"><i class="bi bi-speedometer2"></i> Табло</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="@NavClass("Sites")" asp-controller="Sites" asp-action="Index"><i class="bi bi-building"></i> Обекти</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="@NavClass("Guards")" asp-controller="Guards" asp-action="Index"><i class="bi bi-person-badge"></i> Охранители</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="@NavClass("Shifts")" asp-controller="Shifts" asp-action="Index"><i class="bi bi-calendar-week"></i> График</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="@NavClass("Incidents")" asp-controller="Incidents" asp-action="Index"><i class="bi bi-exclamation-triangle"></i> Инциденти</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container py-4" role="main">
+        <partial name="_StatusMessagePartial" />
+        @RenderBody()
+    </main>
+
+    <footer class="gp-footer">
+        <div class="container d-flex flex-column flex-sm-row justify-content-between gap-2">
+            <span>&copy; @DateTime.Now.Year @ApplicationConstants.ApplicationName – лесно управление на охраната</span>
+            <span>
+                <a asp-controller="Home" asp-action="About">За проекта</a>
+            </span>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
